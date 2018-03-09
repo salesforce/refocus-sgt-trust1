@@ -1,0 +1,36 @@
+{
+  "name": "refocus-sgt-trust1",
+  "version": "1.0.0",
+  "description": "A Refocus Sample Generator Template for generating samples based on Salesforce's Trust1 API.",
+  "main": "index.js",
+  "dependencies": {
+    "@salesforce/refocus-collector-eval": "*",
+    "chai": "*",
+    "chai-url": "*",
+    "fs-extra": "4.*",
+    "istanbul": "*",
+    "mocha": "*"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R dot transform/testTransform.js connection/testConnection.js ",
+    "build": "sgtu-build",
+    "deploy": "sgtu-deploy",
+    "template-init": "sgtu-init",
+    "test-connection": "./node_modules/mocha/bin/_mocha  connection/testConnection.js",
+    "test-transform": "./node_modules/mocha/bin/_mocha  transform/testTransform.js",
+    "validate": "echo \"validate\""
+  },
+  "keywords": [
+    "refocus",
+    "salesforce",
+    "status",
+    "trust",
+    "trust1"
+  ],
+  "author": {
+    "name": "Salesforce CX Tools",
+    "email": "SiteReliabilityTools@salesforce.com"
+  },
+  "license": "ISC"
+}
