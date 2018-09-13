@@ -42,3 +42,12 @@ dump.rdb
 
 # Remove codecoverage directory
 .coverage
+
+# Remove IDEA content
+.idea
+
+# Remove package-lock.json directory
+package-lock.json
+
+# MAC files
+.DS_Store

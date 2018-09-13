@@ -9,13 +9,12 @@ const tu = require('../utils/testUtils');
 describe('connection tests >', () => {
   before(tu.buildConnection);
 
-  const ctx = {
-    baseTrustUrl: 'https://trust.salesforce.com/api',
-    statusLinkUrl: 'http://status.salesforce.com/status',
-  };
-
   describe('prepareUrl >', () => {
     it('prepareUrl, default window', () => {
+      const ctx = {
+        baseTrustUrl: 'https://trust.salesforce.com/api',
+        statusLinkUrl: 'http://status.salesforce.com/status',
+      };
       const url = tu.prepareUrl(ctx);
       expect(url).to.have.protocol('https');
       expect(url).to.contain.hostname('trust.salesforce.com');
@@ -25,6 +24,10 @@ describe('connection tests >', () => {
 
   describe('prepareHeaders >', () => {
     it('prepareHeaders, default', () => {
+      const ctx = {
+        baseTrustUrl: 'https://trust.salesforce.com/api',
+        statusLinkUrl: 'http://status.salesforce.com/status',
+      };
       const headers = tu.prepareHeaders(ctx);
       expect(headers).to.have.property('Accept', 'application/json');
     });

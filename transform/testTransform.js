@@ -154,6 +154,14 @@ describe('transform tests >', () => {
       });
     });
 
+    describe('response validation >', () => {
+      it('must fail when invalid response', () => {
+        [1, '', {}, { body: { a: '' } }, { body: [1,2] }, { body: [1] }, { body: [] }].forEach((it) => {
+          expect(() => tu.validateResponse(it)).to.throw();
+        });
+      });
+    });
+
     describe('truncateMessage >', () => {
       const msg = 'abcdefg hijklmnop';
 

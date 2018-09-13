@@ -142,4 +142,17 @@ module.exports = {
       description: 'An object which maps each Trust1 status enum value to a sample value, messageCode and messageBody.',
     },
   },
+  responseSchema: {
+    type: 'object',
+    required: ['body'],
+    properties: {
+      body: {
+        type: 'array',
+        minItems: 1,
+        items: {
+          type: 'object'
+        },
+      },
+    },
+  },
 };
