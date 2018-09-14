@@ -151,7 +151,7 @@ module.exports = {
         "minItems": 1,
         "items": {
           "type": "object",
-          "required": ["key", "status"],
+          "required": ["key"],
           "properties": {
             "key": {
               "type": "string",
