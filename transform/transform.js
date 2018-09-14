@@ -143,14 +143,58 @@ module.exports = {
     },
   },
   responseSchema: {
-    type: 'object',
-    required: ['body'],
-    properties: {
-      body: {
-        type: 'array',
-        minItems: 1,
-        items: {
-          type: 'object'
+      "type": "object",
+      "required": ["body"],
+      "properties": {
+        "body": {
+        "type": "array",
+        "minItems": 1,
+        "items": {
+          "type": "object",
+          "required": ["key", "status"],
+          "properties": {
+            "key": {
+              "type": "string",
+              "maxLength": 255,
+            },
+            "location": {
+              "type": "string",
+              "maxLength": 255,
+            },
+            "environment": {
+              "type": "string",
+              "maxLength": 255,
+            },
+            "releaseVersion": {
+              "type": "string",
+              "maxLength": 255,
+            },
+            "releaseNumber": {
+              "type": "string",
+              "maxLength": 255,
+            },
+            "status": {
+              "type": "string",
+              "enum": ["OK", "MAJOR_INCIDENT_CORE", "MINOR_INCIDENT_CORE", "MAINTENANCE_CORE",
+                "MAJOR_INCIDENT_NONCORE", "MINOR_INCIDENT_NONCORE", "MAINTENANCE_NONCORE"],
+              "maxLength": 255,
+            },
+            "isActive": {
+              "type": "boolean",
+            },
+            "Products": {
+              "type": "array",
+            },
+            "Incidents": {
+              "type": "array",
+            },
+            "Maintenances": {
+              "type": "array",
+            },
+            "Tags": {
+              "type": "array",
+            },
+          },
         },
       },
     },

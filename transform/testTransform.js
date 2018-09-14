@@ -156,8 +156,20 @@ describe('transform tests >', () => {
 
     describe('response validation >', () => {
       it('must fail when invalid response', () => {
-        [1, '', {}, { body: { a: '' } }, { body: [1,2] }, { body: [1] }, { body: [] }].forEach((it) => {
-          expect(() => tu.validateResponse(it)).to.throw();
+        const withoutStatus = {
+          body: [
+              {
+                  "key": "P1",
+                  "location": "NA",
+                  "environment": "production",
+                  "releaseVersion": "Winter '18 Patch 11.4",
+                  "releaseNumber": "210.11.4"
+              }
+          ]
+        };
+        [1, '', {}, { body: { a: '' } }, { body: [1,2] }, { body: [1] }, { body: [] },
+          withoutStatus].forEach((it) => {
+            expect(() => tu.validateResponse(it)).to.throw();
         });
       });
     });
