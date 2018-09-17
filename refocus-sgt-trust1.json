@@ -1,6 +1,6 @@
 {
   "name": "refocus-sgt-trust1",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A Refocus Sample Generator Template for generating samples based on Salesforce's Trust1 API.",
   "tags": [
     "refocus",
