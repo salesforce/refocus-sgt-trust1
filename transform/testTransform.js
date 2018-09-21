@@ -154,45 +154,65 @@ describe('transform tests >', () => {
       });
     });
 
+    describe('response validation >', () => {
+      it('must fail when invalid response', () => {
+        const withoutRequiredkey = {
+          body: [
+            {
+              "location": "NA",
+              "environment": "production",
+              "releaseVersion": "Winter '18 Patch 11.4",
+              "releaseNumber": "210.11.4"
+            }
+          ]
+        };
+        const withInvalidType = {
+          body: [
+            {
+              "key": 1,
+              "location": 0,
+              "status": "NOT_IN_ENUM",
+              "environment": 1,
+              "releaseVersion": 0,
+              "releaseNumber": 0,
+              "Products": {}
+            }
+          ]
+        };
+        [1, '', {}, { body: { a: '' } }, { body: [1,2] }, { body: [1] }, { body: [] },
+          withoutRequiredkey, withInvalidType].forEach((it) => {
+            expect(() => tu.validateResponse(it)).to.throw();
+        });
+      });
+    });
+
     describe('truncateMessage >', () => {
       const msg = 'abcdefg hijklmnop';
 
-      it('null message', () => {
-        expect(helpers.truncateMessage(null, 10)).to.equal(null);
-      });
-
-      it('empty message', () => {
-        expect(helpers.truncateMessage('', 10)).to.equal('');
-      });
-
-      it('undefined message', () => {
-        expect(helpers.truncateMessage(undefined, 10)).to.equal(undefined);
+      it('Must return expected result when msg is invalid', () => {
+        [
+          [null, null],
+          ['', ''],
+          [undefined, undefined],
+        ].forEach((dataTable) => {
+          const input = dataTable[0];
+          const expectedResult = dataTable[1];
+          expect(helpers.truncateMessage(input, 10)).to.equal(expectedResult);
+        });
       });
 
       it('not too long, returns unmodified', () => {
-        expect(helpers.truncateMessage(msg, 20))
-        .to.equal('abcdefg hijklmnop');
+        expect(helpers.truncateMessage(msg, 20)).to.equal('abcdefg hijklmnop');
       });
 
       it('too long, truncates', () => {
-        expect(helpers.truncateMessage(msg, 10))
-        .to.equal('abcdefg...');
+        expect(helpers.truncateMessage(msg, 10)).to.equal('abcdefg...');
       });
 
-      it('max not a number, returns unmodified', () => {
-        expect(helpers.truncateMessage(msg, '14')).to.equal(msg);
-      });
-
-      it('max undefined, returns unmodified', () => {
-        expect(helpers.truncateMessage(msg)).to.equal(msg);
-      });
-
-      it('max 0, returns unmodified', () => {
-        expect(helpers.truncateMessage(msg, 0)).to.equal(msg);
-      });
-
-      it('max 3, returns unmodified', () => {
-        expect(helpers.truncateMessage(msg, 0)).to.equal(msg);
+      it('must return unmodified when invalid max argument', () => {
+        [undefined, 0, 3, '14'].forEach((max) => {
+          expect(helpers.truncateMessage(msg, max)).to.equal(msg);
+        });
       });
     });
   });

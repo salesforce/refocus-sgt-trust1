@@ -84,4 +84,9 @@ module.exports = {
 
     return rce.safeTransform(fn, args, true);
   }, // evalTransformFunction
+
+  validateResponse(res) {
+      const sgt = fs.readJsonSync(`./${projectName}.json`);
+      rce.validateResponseBody(res, sgt.transform.responseSchema);
+  },
 };
