@@ -30,6 +30,7 @@ describe('transform tests >', () => {
     { name: 'p2', absolutePath: 'dc1.sp1.p2' },
     { name: 'p3', absolutePath: 'dc2.sp1.p3' },
     { name: 'p5', absolutePath: 'dc2.sp1.p5' },
+    { name: 'p6', absolutePath: 'dc2.sp1.p6' },
   ];
   const res = {
     body: [
@@ -81,6 +82,18 @@ describe('transform tests >', () => {
         "Incidents": [],
         "Maintenances": []
       },
+      {
+        "key": "P6",
+        "location": "EU",
+        "environment": "production",
+        "releaseVersion": "Winter '18 Patch 11.4",
+        "releaseNumber": "210.11.4",
+        "status": "OK",
+        "isActive": false,
+        "Products": [],
+        "Incidents": [],
+        "Maintenances": []
+      },
     ],
   };
   const statusLinkUrl = 'https://status.salesforce.com';
@@ -88,7 +101,7 @@ describe('transform tests >', () => {
   describe('transform >', () => {
     it('transform', () => {
       const samples = tu.doTransform(ctx, aspects, subjects, res);
-      expect(samples).to.be.an('array').with.length(4);
+      expect(samples).to.be.an('array').with.length(5);
       expect(samples[0]).to.deep.equal({
         messageBody: '',
         messageCode: '',
@@ -126,6 +139,18 @@ describe('transform tests >', () => {
         value: '0',
        });
       expect(samples[3]).to.deep.equal({
+        messageBody: ' (this instance has isActive=false on trust) ',
+        messageCode: '',
+        name: 'dc2.sp1.p6|trust1',
+        relatedLinks: [
+          {
+            name: 'Trust',
+            url: 'http://status.salesforce.com/status/P6',
+          }
+        ],
+        value: '0',
+       });
+      expect(samples[4]).to.deep.equal({
         messageBody: 'Status for p5 not returned by ' +
           'https://api.status.salesforce.com/v1/instances/status/preview.',
         messageCode: '',
