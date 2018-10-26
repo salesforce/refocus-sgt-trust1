@@ -39,8 +39,10 @@ module.exports = {
       const smap =
         ctx.statusMap[entry.status] || { messageBody: '', messageCode: '' };
       const absPath = subjectMap[entry.key.toLowerCase()];
+      const mbody = smap.messageBody || '' +
+        (entry.isActive ? '' : ' (this instance has isActive=false on trust) ');
       sampleList.push({
-        messageBody: truncateMessage(smap.messageBody || '', 4096),
+        messageBody: truncateMessage(mbody, 4096),
         messageCode: smap.messageCode || '',
         name: `${absPath}|${asp}`,
         relatedLinks: [toRelatedLink(ctx.statusLinkUrl, entry.key)],
