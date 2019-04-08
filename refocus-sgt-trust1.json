@@ -1,6 +1,6 @@
 {
   "name": "refocus-sgt-trust1",
-  "version": "1.0.2",
+  "version": "2.0.0",
   "description": "A Refocus Sample Generator Template for generating samples based on Salesforce's Trust1 API.",
   "tags": [
     "refocus",
@@ -18,8 +18,8 @@
     "headers": {
       "Accept": "application/json"
     },
-    "url": "{{baseTrustUrl}}/v1/instances/status/preview",
-    "bulk": true
+    "bulk": false,
+    "toUrl": "return`${ctx.baseTrustUrl}/v1/instances/${subjects[0].name}/status/preview?childProducts=false`"
   },
   "contextDefinition": {
     "baseTrustUrl": {
@@ -75,7 +75,7 @@
   },
   "transform": {
     "errorHandlers": {},
-    "responseSchema": "{\"type\":\"object\",\"required\":[\"body\"],\"properties\":{\"body\":{\"type\":\"array\",\"minItems\":1,\"items\":{\"type\":\"object\",\"required\":[\"key\"],\"properties\":{\"key\":{\"type\":\"string\",\"maxLength\":255},\"location\":{\"type\":\"string\",\"maxLength\":255},\"environment\":{\"type\":\"string\",\"maxLength\":255},\"releaseVersion\":{\"type\":\"string\",\"maxLength\":255},\"releaseNumber\":{\"type\":\"string\",\"maxLength\":255},\"status\":{\"type\":\"string\",\"enum\":[\"OK\",\"MAJOR_INCIDENT_CORE\",\"MINOR_INCIDENT_CORE\",\"MAINTENANCE_CORE\",\"MAJOR_INCIDENT_NONCORE\",\"MINOR_INCIDENT_NONCORE\",\"MAINTENANCE_NONCORE\"],\"maxLength\":255},\"isActive\":{\"type\":\"boolean\"},\"Products\":{\"type\":\"array\"},\"Incidents\":{\"type\":\"array\"},\"Maintenances\":{\"type\":\"array\"},\"Tags\":{\"type\":\"array\"}}}}}}",
-    "default": "const e=aspects[0].name,s=`${ctx.baseTrustUrl}/v1/instances/status/preview`,t=[],a={};var r,o;return subjects.forEach(e=>a[e.name.toLowerCase()]=e.absolutePath),res.body.filter(e=>e.hasOwnProperty('key')&&a[e.key.toLowerCase()]).forEach(s=>{const u=ctx.statusMap[s.status]||{messageBody:'',messageCode:''},i=a[s.key.toLowerCase()],l=u.messageBody||(s.isActive?'':' (this instance has isActive=false on trust) ');t.push({messageBody:(r=l,o=4096,'number'==typeof o&&o>=4&&'string'==typeof r&&r.length>o?r.substring(0,o-3)+'...':r),messageCode:u.messageCode||'',name:`${i}|${e}`,relatedLinks:[n(ctx.statusLinkUrl,s.key)],value:u.value||s.status}),delete a[s.key.toLowerCase()]}),Object.keys(a).forEach(r=>t.push({messageBody:`Status for ${r} not returned by ${s}.`,messageCode:'',name:`${a[r]}|${e}`,relatedLinks:[n(ctx.statusLinkUrl,r)],value:ctx.errorValue})),t;function n(e,s){return{name:'Trust',url:`${e}/${s}`}}"
+    "responseSchema": "{\"type\":\"object\",\"required\":[\"body\"],\"properties\":{\"body\":{\"type\":\"object\",\"required\":[\"key\"],\"properties\":{\"key\":{\"type\":\"string\",\"maxLength\":255},\"location\":{\"type\":\"string\",\"maxLength\":255},\"environment\":{\"type\":\"string\",\"maxLength\":255},\"releaseVersion\":{\"type\":\"string\",\"maxLength\":255},\"releaseNumber\":{\"type\":\"string\",\"maxLength\":255},\"status\":{\"type\":\"string\",\"enum\":[\"OK\",\"MAJOR_INCIDENT_CORE\",\"MINOR_INCIDENT_CORE\",\"MAINTENANCE_CORE\",\"MAJOR_INCIDENT_NONCORE\",\"MINOR_INCIDENT_NONCORE\",\"MAINTENANCE_NONCORE\"],\"maxLength\":255},\"isActive\":{\"type\":\"boolean\"},\"Products\":{\"type\":\"array\"},\"Incidents\":{\"type\":\"array\"},\"Maintenances\":{\"type\":\"array\"},\"Tags\":{\"type\":\"array\"}}}}}",
+    "default": "const s=ctx.statusMap[res.body.status]||{messageBody:'',messageCode:''};return[{messageBody:(a=s.messageBody||(res.body.isActive?'':' (this instance has isActive=false on trust) '),'string'==typeof a&&a.length>4096?a.substring(0,4093)+'...':a),messageCode:s.messageCode||'',name:`${subject.absolutePath}|${aspects[0].name}`,relatedLinks:[(e=ctx.statusLinkUrl,t=res.body.key,{name:'Trust',url:`${e}/${t}`})],value:s.value||res.body.status}];var e,t,a"
   }
 }

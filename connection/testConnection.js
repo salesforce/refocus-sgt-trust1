@@ -9,16 +9,19 @@ const tu = require('../utils/testUtils');
 describe('connection tests >', () => {
   before(tu.buildConnection);
 
+  const aspects = [{ name: 'Trust', timeout: '5m' }];
+  const subjects = [{ absolutePath: 'a.b.cdefg', name: 'cdefg' }];
+
   describe('prepareUrl >', () => {
     it('prepareUrl, default window', () => {
       const ctx = {
         baseTrustUrl: 'https://trust.salesforce.com/api',
         statusLinkUrl: 'http://status.salesforce.com/status',
       };
-      const url = tu.prepareUrl(ctx);
+      const url = tu.prepareUrl(ctx, aspects, subjects);
       expect(url).to.have.protocol('https');
       expect(url).to.contain.hostname('trust.salesforce.com');
-      expect(url).to.contain.path('/api/v1/instances/status/preview');
+      expect(url).to.contain.path('/api/v1/instances/cdefg/status/preview?childProducts=false');
     });
   });
 

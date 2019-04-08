@@ -50,12 +50,9 @@ The following context variables may be specified by the Sample Generator and wil
 
 ## Transform Algorithm
 
-1. Map each subject's name to its absolutePath. Force lowercase for mapping.
-1. Filter out subjects from the trust response body which are NOT in the list of subjects provided by the SampleGenerator.
-1. For each trust status entry that made it through the filter, generate a sample and add it to the 'sampleList' array. Clear each entry from the subjectMap as we go.
-1. For each subject provided by the SampleGenerator which was missing from the trust response, generate an error sample and add it to the array of samples to return.
-1. Return the array of samples.
+Generate a sample based on the instance status.
 
 # Revision History
 
+* 2.0.0 - Use individual instance API endpoint instead of bulk
 * 1.0.2 - include isActive=false in sample messageBody when isActive=false
