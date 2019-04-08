@@ -3,8 +3,6 @@
  */
 module.exports = {
   transformBySubject(ctx, aspects, subject, res) {
-    const collectUrl =
-      `${ctx.baseTrustUrl}/v1/instances/${subject.name}/status/preview`;
     const smap = ctx.statusMap[res.body.status] ||
       { messageBody: '', messageCode: '' };
     const mbody = smap.messageBody || '' + (res.body.isActive ? '' :
@@ -14,7 +12,7 @@ module.exports = {
       messageCode: smap.messageCode || '',
       name: `${subject.absolutePath}|${aspects[0].name}`,
       relatedLinks: [toRelatedLink(ctx.statusLinkUrl, res.body.key)],
-      value: smap.value || entry.status,
+      value: smap.value || res.body.status,
     }];
   },
 
