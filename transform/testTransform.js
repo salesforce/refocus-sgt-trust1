@@ -25,83 +25,27 @@ describe('transform tests >', () => {
     },
   };
   const aspects = [{ name: 'trust1', timeout: '60s' }];
-  const subjects = [
-    { name: 'p1', absolutePath: 'dc1.sp1.p1' },
-    { name: 'p2', absolutePath: 'dc1.sp1.p2' },
-    { name: 'p3', absolutePath: 'dc2.sp1.p3' },
-    { name: 'p5', absolutePath: 'dc2.sp1.p5' },
-    { name: 'p6', absolutePath: 'dc2.sp1.p6' },
-  ];
+  const subject = { name: 'p1', absolutePath: 'dc1.sp1.p1' };
   const res = {
-    body: [
-      {
-        "key": "P1",
-        "location": "NA",
-        "environment": "production",
-        "releaseVersion": "Winter '18 Patch 11.4",
-        "releaseNumber": "210.11.4",
-        "status": "OK",
-        "isActive": true,
-        "Products": [],
-        "Incidents": [],
-        "Maintenances": []
-      },
-      {
-        "key": "P2",
-        "location": "NA",
-        "environment": "production",
-        "releaseVersion": "Winter '18 Patch 11.4",
-        "releaseNumber": "210.11.4",
-        "status": "OK",
-        "isActive": true,
-        "Products": [],
-        "Incidents": [],
-        "Maintenances": []
-      },
-      {
-        "key": "P3",
-        "location": "NA",
-        "environment": "production",
-        "releaseVersion": "Winter '18 Patch 11.4",
-        "releaseNumber": "210.11.4",
-        "status": "OK",
-        "isActive": true,
-        "Products": [],
-        "Incidents": [],
-        "Maintenances": []
-      },
-      {
-        "key": "P4",
-        "location": "NA",
-        "environment": "production",
-        "releaseVersion": "Winter '18 Patch 11.4",
-        "releaseNumber": "210.11.4",
-        "status": "OK",
-        "isActive": true,
-        "Products": [],
-        "Incidents": [],
-        "Maintenances": []
-      },
-      {
-        "key": "P6",
-        "location": "EU",
-        "environment": "production",
-        "releaseVersion": "Winter '18 Patch 11.4",
-        "releaseNumber": "210.11.4",
-        "status": "OK",
-        "isActive": false,
-        "Products": [],
-        "Incidents": [],
-        "Maintenances": []
-      },
-    ],
+    body: {
+      "key": "P1",
+      "location": "NA",
+      "environment": "production",
+      "releaseVersion": "Winter '18 Patch 11.4",
+      "releaseNumber": "210.11.4",
+      "status": "OK",
+      "isActive": true,
+      "Products": [],
+      "Incidents": [],
+      "Maintenances": []
+    },
   };
   const statusLinkUrl = 'https://status.salesforce.com';
 
   describe('transform >', () => {
     it('transform', () => {
-      const samples = tu.doTransform(ctx, aspects, subjects, res);
-      expect(samples).to.be.an('array').with.length(5);
+      const samples = tu.doTransform(ctx, aspects, subject, res);
+      expect(samples).to.be.an('array').with.length(1);
       expect(samples[0]).to.deep.equal({
         messageBody: '',
         messageCode: '',
@@ -114,67 +58,16 @@ describe('transform tests >', () => {
         ],
         value: '0',
        });
-      expect(samples[1]).to.deep.equal({
-        messageBody: '',
-        messageCode: '',
-        name: 'dc1.sp1.p2|trust1',
-        relatedLinks: [
-          {
-            name: 'Trust',
-            url: 'http://status.salesforce.com/status/P2',
-          }
-        ],
-        value: '0',
-       });
-      expect(samples[2]).to.deep.equal({
-        messageBody: '',
-        messageCode: '',
-        name: 'dc2.sp1.p3|trust1',
-        relatedLinks: [
-          {
-            name: 'Trust',
-            url: 'http://status.salesforce.com/status/P3',
-          }
-        ],
-        value: '0',
-       });
-      expect(samples[3]).to.deep.equal({
-        messageBody: ' (this instance has isActive=false on trust) ',
-        messageCode: '',
-        name: 'dc2.sp1.p6|trust1',
-        relatedLinks: [
-          {
-            name: 'Trust',
-            url: 'http://status.salesforce.com/status/P6',
-          }
-        ],
-        value: '0',
-       });
-      expect(samples[4]).to.deep.equal({
-        messageBody: 'Status for p5 not returned by ' +
-          'https://api.status.salesforce.com/v1/instances/status/preview.',
-        messageCode: '',
-        name: 'dc2.sp1.p5|trust1',
-        relatedLinks: [
-          {
-            name: 'Trust',
-            url: 'http://status.salesforce.com/status/p5',
-          }
-        ],
-        value: '-1',
-       });
     });
   });
 
   describe('helpers >', () => {
     describe('toRelatedLink >', () => {
       it('OK', () => {
-        subjects.forEach((s) => {
-          expect(helpers.toRelatedLink(statusLinkUrl, s.name))
-          .to.deep.equal({
-            name: 'Trust',
-            url: `${statusLinkUrl}/${s.name}`,
-          });
+        expect(helpers.toRelatedLink(statusLinkUrl, subject.name))
+        .to.deep.equal({
+          name: 'Trust',
+          url: `${statusLinkUrl}/${subject.name}`,
         });
       });
     });

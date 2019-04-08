@@ -2,7 +2,9 @@
  * connection.js
  */
 module.exports = {
-  url: '{{baseTrustUrl}}/v1/instances/status/preview',
+  toUrl(ctx, aspects, subjects) {
+    return `${ctx.baseTrustUrl}/v1/instances/${subjects[0].name}/status/preview?childProducts=false`;
+  },
   headers: {
     Accept: 'application/json',
   },
