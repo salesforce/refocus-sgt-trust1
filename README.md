@@ -1,5 +1,7 @@
 # refocus-sgt-trust1
 
+Note: this repository is infrequently maintained.
+
 ## Description
 
 A Refocus Sample Generator Template for generating samples based on Salesforce's Trust1 API.
